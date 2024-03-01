@@ -4,10 +4,9 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-struct Coords {
-  unsigned short x = 0;
-  unsigned short y = 0;
-};
+#include "Encoder.h"
+#include "Coordinates.h"
+#include "Photogate.h"
 
 class Display {
   const unsigned short SCREEN_WIDTH = 128;
@@ -15,12 +14,16 @@ class Display {
   const short OLED_RST = -1;
   const byte SCREEN_ADDR = 0x3C;
   Adafruit_SSD1306 disp;
-  Coords centerText // todo: write fn to center text
+  Encoder enc;
+  EncoderData enc_data;
+
+  Coordinates centerText(String text, unsigned short level);
+  void rectAroundText(String text, unsigned short x, unsigned short y);
 
   public:
   Display(void);
   void initScreen(void);
-  void menuSelect(void);
+  void menuSelect(Photogate& gate_1, Photogate& gate_2);
 };
 
 #endif

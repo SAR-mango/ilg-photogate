@@ -1,13 +1,14 @@
 #include "Includes.h"
 #include "Display.h"
-#include "Encoder.h"
 
 void setup(void) {
-  Encoder enc;
   Display disp;
   disp.initScreen();
+  delay(1000);
+  Photogate gate_1(5, 0);
+  Photogate gate_2(6, 1);
+  disp.menuSelect(gate_1, gate_2);
 }
 
 void loop(void) {
-  // put your main code here, to run repeatedly:
 }
