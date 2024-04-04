@@ -6,6 +6,7 @@
 
 #include "Encoder.h"
 #include "Photogate.h"
+#include "Modes.h"
 
 enum GateStatus {BOTH, ONE, NONE};
 
@@ -23,6 +24,7 @@ class Display {
   void boxedText(String text, short x, short y);
   GateStatus checkGates(Photogate& gate_1, Photogate& gate_2);
   void displayOptions(GateStatus status);
+  void selectedDot(EncoderData data, GateStatus status);
 
   public:
   Display(void);

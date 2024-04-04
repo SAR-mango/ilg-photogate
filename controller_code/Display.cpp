@@ -32,32 +32,30 @@ GateStatus Display::checkGates(Photogate& gate_1, Photogate& gate_2) {
 }
 
 void Display::displayOptions(GateStatus status) {
-  if (status == BOTH) {
-    disp.clearDisplay();
-    boxedText("Two Gates", -2, -2);
-    disp.setCursor(0,11);
-    disp.println("Average");
-    disp.setCursor(0,22);
-    disp.println("Time of Flight");
-  }
-  else if (status == ONE) {
+  if (status == ONE) {
     disp.clearDisplay();
     boxedText("One Gate", -2, -2);
-    disp.setCursor(0,11);
-    disp.print("Single");
-    disp.setCursor(0,22);
-    disp.print("Stopwatch");
-    disp.setCursor(65,0);
-    disp.print("Pendulum");
-    disp.setCursor(65,11);
-    disp.print("Continuous");
-    disp.setCursor(65,22);
-    disp.print("Count");
+    for (auto i : one_gate_modes) {
+      disp.setCursor(i.x, i.y);
+      disp.print(i.name);
+    }
+  }
+  else if (status == BOTH) {
+    disp.clearDisplay();
+    boxedText("Two Gates", -2, -2);
+    for (auto i : two_gate_modes) {
+      disp.setCursor(i.x, i.y);
+      disp.print(i.name);
+    }
   }
   else {
     disp.clearDisplay();
     centeredText("No Gates Connected");
   }
+}
+
+void Display::selectedDot(EncoderData data, GateStatus status) {
+  
 }
 
 Display::Display(void) {
@@ -90,6 +88,6 @@ void Display::modeSelect(Photogate& gate_1, Photogate& gate_2) {
       last_gate_status = gate_status;
     }
     enc.listen(enc_data);
-    selectedDot(enc, gate_status);
+    selectedDot(enc_data, gate_status);
   }
 }
