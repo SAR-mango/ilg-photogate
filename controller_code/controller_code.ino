@@ -2,7 +2,7 @@
 #include "Display.h"
 
 void setup(void) {
-  //Serial.begin(115200);
+  // Serial.begin(115200);
   Display disp;
   disp.initScreen();
   delay(1000);
