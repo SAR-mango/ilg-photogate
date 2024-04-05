@@ -58,13 +58,21 @@ void Display::selectedDot(EncoderData data, GateStatus status) {
   if (status == ONE) {
     const unsigned short mode_num = abs(data.position % num_one_gate_modes);
     unsigned short last_mode_num;
+    unsigned short next_mode_num;
     if (mode_num == 0) {
       last_mode_num = num_one_gate_modes;
     }
     else {
       last_mode_num = mode_num - 1;
     }
+    if (mode_num == 4) {
+      next_mode_num = 0;
+    }
+    else {
+      next_mode_num = mode_num + 1;
+    }
     disp.fillRect(one_gate_modes[last_mode_num].x + 6*one_gate_modes[last_mode_num].name.length() + 2, one_gate_modes[last_mode_num].y + 3, 3, 3, SSD1306_BLACK);
+    disp.fillRect(one_gate_modes[next_mode_num].x + 6*one_gate_modes[next_mode_num].name.length() + 2, one_gate_modes[next_mode_num].y + 3, 3, 3, SSD1306_BLACK);
     disp.fillRect(one_gate_modes[mode_num].x + 6*one_gate_modes[mode_num].name.length() + 2, one_gate_modes[mode_num].y + 3, 3, 3, SSD1306_WHITE);
     disp.display();
   }
