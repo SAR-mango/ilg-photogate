@@ -18,4 +18,6 @@ const unsigned short num_two_gate_modes = 2;
 extern const Mode one_gate_modes[num_one_gate_modes];
 extern const Mode two_gate_modes[num_two_gate_modes];
 
+extern short mode;
+
 #endif

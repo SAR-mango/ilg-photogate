@@ -19,12 +19,14 @@ class Display {
   const byte SCREEN_ADDR = 0x3C;
   Adafruit_SSD1306 disp;
   Encoder enc;
+  GateStatus gate_status;
 
   void centeredText(String text, unsigned short level = 5);
   void boxedText(String text, short x, short y);
   GateStatus checkGates(Photogate& gate_1, Photogate& gate_2);
-  void displayOptions(GateStatus status);
-  void selectedDot(EncoderData data, GateStatus status);
+  void displayOptions();
+  short getSelectedMode(EncoderData data);
+  bool modeConfScreen();
 
   public:
   Display(void);
