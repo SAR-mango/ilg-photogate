@@ -3,8 +3,7 @@
 void Display::centeredText(String text, unsigned short level = 5) {
   if (0 <= level && level <= 3) {
     disp.setCursor((SCREEN_WIDTH - CHAR_WIDTH * text.length()) / 2, CHAR_HEIGHT * level);
-  }
-  else {
+  } else {
     disp.setCursor((SCREEN_WIDTH - CHAR_WIDTH * text.length()) / 2, SCREEN_HEIGHT / 2 - CHAR_HEIGHT / 2);
   }
   disp.println(text);
@@ -39,62 +38,81 @@ void Display::displayOptions() {
       disp.setCursor(i.x, i.y);
       disp.print(i.name);
     }
-  }
-  else if (gate_status == BOTH) {
+  } else if (gate_status == BOTH) {
     disp.clearDisplay();
     boxedText("Two Gates", -2, -2);
     for (const auto i : two_gate_modes) {
       disp.setCursor(i.x, i.y);
       disp.print(i.name);
     }
-  }
-  else {
+  } else {
     disp.clearDisplay();
     centeredText("No Gates Connected");
   }
+  disp.display();
 }
 
-short Display::getSelectedMode(EncoderData data) {
+short Display::getSelectedMode() {
   if (gate_status == ONE) {
-    const unsigned short mode_num = abs(data.position % num_one_gate_modes);
+    const unsigned short mode_num = abs(enc_data.position % num_one_gate_modes);
     for (unsigned short i = 0; i < num_one_gate_modes; i++) {
       if (i == mode_num) {
-        disp.fillRect(one_gate_modes[i].x + 6*one_gate_modes[i].name.length() + 2, one_gate_modes[i].y + 3, 3, 3, SSD1306_WHITE);
-      }
-      else {
-        disp.fillRect(one_gate_modes[i].x + 6*one_gate_modes[i].name.length() + 2, one_gate_modes[i].y + 3, 3, 3, SSD1306_BLACK);
+        disp.fillRect(one_gate_modes[i].x + 6 * one_gate_modes[i].name.length() + 2, one_gate_modes[i].y + 3, 3, 3, SSD1306_WHITE);
+      } else {
+        disp.fillRect(one_gate_modes[i].x + 6 * one_gate_modes[i].name.length() + 2, one_gate_modes[i].y + 3, 3, 3, SSD1306_BLACK);
       }
     }
     disp.display();
     return mode_num;
-  }
-  else if (gate_status == BOTH) {
-    const unsigned short mode_num = abs(data.position % num_two_gate_modes);
+  } else if (gate_status == BOTH) {
+    const unsigned short mode_num = abs(enc_data.position % num_two_gate_modes);
     for (unsigned short i = 0; i < num_two_gate_modes; i++) {
       if (i == mode_num) {
-        disp.fillRect(two_gate_modes[i].x + 6*two_gate_modes[i].name.length() + 2, two_gate_modes[i].y + 3, 3, 3, SSD1306_WHITE);
-      }
-      else {
-        disp.fillRect(two_gate_modes[i].x + 6*two_gate_modes[i].name.length() + 2, two_gate_modes[i].y + 3, 3, 3, SSD1306_BLACK);
+        disp.fillRect(two_gate_modes[i].x + 6 * two_gate_modes[i].name.length() + 2, two_gate_modes[i].y + 3, 3, 3, SSD1306_WHITE);
+      } else {
+        disp.fillRect(two_gate_modes[i].x + 6 * two_gate_modes[i].name.length() + 2, two_gate_modes[i].y + 3, 3, 3, SSD1306_BLACK);
       }
     }
     disp.display();
     return mode_num;
-  }
-  else {
+  } else {
     return -1;
   }
 }
 
 bool Display::modeConfScreen() {
-  //stub
-  if(mode==-1) return false;
-  return true;
-  //todo: implement the actual screen that displays the mode based on mode number and gate status.
+  disp.clearDisplay();
+  if (mode == -1) {
+    return false;
+  }
+  if (gate_status == ONE) {
+    centeredText(one_gate_modes[mode].name, 0);
+  }
+  else {
+    centeredText(two_gate_modes[mode].name, 0);
+  }
+  centeredText("OK    BACK", 2);
+  while (enc_data.button_pressed) {
+    enc.listen(enc_data);
+  }
+  do {
+    if (enc_data.position % 2 == 0) {
+      disp.fillRect(48, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_WHITE);
+      disp.fillRect(96, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+      disp.display();
+    }
+    else {
+      disp.fillRect(48, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+      disp.fillRect(96, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_WHITE);
+      disp.display();
+    }
+    enc.listen(enc_data);
+  } while (!enc_data.button_pressed);
+  return enc_data.position % 2 == 0;
 }
 
 Display::Display(void) {
-  disp = {SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RST};
+  disp = { SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RST };
   disp.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDR);
   disp.clearDisplay();
   disp.setTextSize(1);
@@ -113,23 +131,24 @@ void Display::modeSelect(Photogate& gate_1, Photogate& gate_2) {
   GateStatus last_gate_status = checkGates(gate_1, gate_2);
   gate_status = last_gate_status;
   displayOptions();
-  disp.display();
-  EncoderData enc_data;
   bool selection_confirmed = false;
   while (!selection_confirmed) {
-    Serial.println("not confirmed");
     enc.listen(enc_data);
     while (!enc_data.button_pressed) {
       gate_status = checkGates(gate_1, gate_2);
       if (gate_status != last_gate_status) {
         displayOptions();
-        disp.display();
         last_gate_status = gate_status;
       }
       enc.listen(enc_data);
-      mode = getSelectedMode(enc_data);
+      mode = getSelectedMode();
     }
     selection_confirmed = modeConfScreen();
-    //Serial.print("Status: "); Serial.println(gate_status); Serial.print("Mode: "); Serial.println(mode);
+    if (!selection_confirmed) {
+      displayOptions();
+      while (enc_data.button_pressed) {
+        enc.listen(enc_data);
+      }
+    }
   }
 }
