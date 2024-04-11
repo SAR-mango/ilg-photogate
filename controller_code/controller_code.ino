@@ -1,8 +1,9 @@
 #include "Includes.h"
 #include "Display.h"
+#include "Programs.h"
 
-void setup(void) {
-  // Serial.begin(115200);
+void setup() {
+  Serial.begin(115200);
   Display disp;
   disp.initScreen();
   delay(1000);
@@ -11,5 +12,5 @@ void setup(void) {
   disp.modeSelect(gate_1, gate_2);
 }
 
-void loop(void) {
+void loop() {
 }

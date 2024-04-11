@@ -9,7 +9,7 @@ class Photogate {
 
   public:
   Photogate(unsigned short detect_pin, unsigned short input_pin);
-  bool connected(void);
+  bool connected();
 };
 
 #endif

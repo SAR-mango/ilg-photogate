@@ -1,6 +1,6 @@
 #include "Modes.h"
 
-const Mode one_gate_modes[num_one_gate_modes] = {
+const Mode one_gate_modes[NUM_ONE_GATE_MODES] = {
   {"Single", 0, 11, "Records time between", "one interruption", "and the next."},
   {"Stopwatch", 0, 22, "a", "b", "c"},
   {"Pendulum", 65, 0, "a", "b", "c"},
@@ -8,7 +8,7 @@ const Mode one_gate_modes[num_one_gate_modes] = {
   {"Count", 65, 22, "a", "b", "c"}
 };
 
-const Mode two_gate_modes[num_two_gate_modes] = {
+const Mode two_gate_modes[NUM_TWO_GATE_MODES] = {
   {"Average", 0, 11, "a", "b", "c"},
   {"Time of Flight", 0, 22, "a", "b", "c"}
 };

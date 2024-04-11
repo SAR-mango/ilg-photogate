@@ -27,11 +27,11 @@ class Display {
   GateStatus checkGates(Photogate& gate_1, Photogate& gate_2);
   void displayOptions();
   short getSelectedMode();
-  bool modeConfScreen();
+  bool confirmMode();
 
   public:
-  Display(void);
-  void initScreen(void);
+  Display();
+  void initScreen();
   void modeSelect(Photogate& gate_1, Photogate& gate_2);
 };
 

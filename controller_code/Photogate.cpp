@@ -7,6 +7,6 @@ Photogate::Photogate(unsigned short detect_pin, unsigned short input_pin) {
   pinMode(input_pin, INPUT);
 }
 
-bool Photogate::connected(void) {
+bool Photogate::connected() {
   return !digitalRead(detect_pin);
 }

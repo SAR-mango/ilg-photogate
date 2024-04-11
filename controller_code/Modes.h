@@ -1,5 +1,6 @@
 #ifndef MODES_H
 #define MODES_H
+
 #include <Arduino.h>
 
 struct Mode {
@@ -12,11 +13,11 @@ struct Mode {
 
 };
 
-const unsigned short num_one_gate_modes = 5;
-const unsigned short num_two_gate_modes = 2;
+const unsigned short NUM_ONE_GATE_MODES = 5;
+const unsigned short NUM_TWO_GATE_MODES = 2;
 
-extern const Mode one_gate_modes[num_one_gate_modes];
-extern const Mode two_gate_modes[num_two_gate_modes];
+extern const Mode one_gate_modes[NUM_ONE_GATE_MODES];
+extern const Mode two_gate_modes[NUM_TWO_GATE_MODES];
 
 extern short mode;
 
