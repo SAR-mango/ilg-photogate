@@ -1,7 +1,7 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include "Adafruit_seesaw.h"
+#include <Adafruit_seesaw.h>
 #include <seesaw_neopixel.h>
 
 struct EncoderData {
@@ -17,7 +17,7 @@ class Encoder {
   seesaw_NeoPixel neopixel;
   long encoder_position = 0;
 
-  public:
+public:
   Encoder(bool enable_neopixel = false);
   EncoderData listen(EncoderData& data);
 };

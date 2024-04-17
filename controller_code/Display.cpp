@@ -83,7 +83,7 @@ bool Display::confirmMode() {
   if (mode == -1) {
     return false;
   }
-  if (0 <= mode && mode <= NUM_ONE_GATE_MODES - 1) {
+  if (0 <= mode && mode < NUM_ONE_GATE_MODES) {
     centeredText(one_gate_modes[mode].name, 0);
   }
   else {

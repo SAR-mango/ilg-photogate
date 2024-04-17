@@ -7,10 +7,6 @@ struct Mode {
   String name;
   unsigned short x;
   unsigned short y;
-  String d1;
-  String d2;
-  String d3;
-
 };
 
 const unsigned short NUM_ONE_GATE_MODES = 5;
