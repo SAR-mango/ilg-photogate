@@ -20,7 +20,7 @@ extern short mode;
 extern volatile unsigned long microseconds_1;
 extern volatile unsigned long microseconds_2;
 
-void setupMode(Photogate& gate_1, Photogate& gate_2);
+void setupInterrupts(Photogate& gate_1, Photogate& gate_2);
 void ISR_getMicros1();
 void ISR_getMicros2();
 

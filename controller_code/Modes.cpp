@@ -1,4 +1,5 @@
 #include "Modes.h"
+#include "Programs.h"
 
 const Mode one_gate_modes[NUM_ONE_GATE_MODES] = {
   {"Single", 0, 11},
@@ -18,7 +19,7 @@ short mode;
 volatile unsigned long microseconds_1;
 volatile unsigned long microseconds_2;
 
-void setupMode(Photogate& gate_1, Photogate& gate_2) {
+void setupInterrupts(Photogate& gate_1, Photogate& gate_2) {
   if (gate_status == GATE1) {
     attachInterrupt(digitalPinToInterrupt(gate_1.input_pin), ISR_getMicros1, RISING);
   }
