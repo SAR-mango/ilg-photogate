@@ -10,8 +10,8 @@ void Display::centeredText(String text, unsigned short level = 5) {
 }
 
 void Display::boxedText(String text, short x, short y) {
-  unsigned short rect_x = x;
-  unsigned short rect_y = y;
+  short rect_x = x;
+  short rect_y = y;
   unsigned short rect_w;
   unsigned short rect_h;
   disp.getTextBounds(text, x, y, &rect_x, &rect_y, &rect_w, &rect_h);
@@ -24,23 +24,26 @@ GateStatus Display::checkGates(Photogate& gate_1, Photogate& gate_2) {
   if (gate_1.connected() && gate_2.connected()) {
     return BOTH;
   }
-  if (gate_1.connected() || gate_2.connected()) {
-    return ONE;
+  if (gate_1.connected()) {
+    return GATE1;
+  }
+  if (gate_2.connected()) {
+    return GATE2;
   }
   return NONE;
 }
 
 void Display::displayOptions() {
   disp.clearDisplay();
-  if (gate_status == ONE) {
+  if (gate_status == GATE1 || gate_status == GATE2) {
     boxedText("One Gate", -2, -2);
-    for (const auto i : one_gate_modes) {
+    for (auto i : one_gate_modes) {
       disp.setCursor(i.x, i.y);
       disp.print(i.name);
     }
   } else if (gate_status == BOTH) {
     boxedText("Two Gates", -2, -2);
-    for (const auto i : two_gate_modes) {
+    for (auto i : two_gate_modes) {
       disp.setCursor(i.x, i.y);
       disp.print(i.name);
     }
@@ -51,7 +54,7 @@ void Display::displayOptions() {
 }
 
 short Display::getSelectedMode() {
-  if (gate_status == ONE) {
+  if (gate_status == GATE1 || gate_status == GATE2) {
     const unsigned short mode_num = abs(enc_data.position % NUM_ONE_GATE_MODES);
     for (unsigned short i = 0; i < NUM_ONE_GATE_MODES; i++) {
       if (i == mode_num) {
@@ -72,7 +75,7 @@ short Display::getSelectedMode() {
       }
     }
     disp.display();
-    return NUM_ONE_GATE_MODES + mode_num;
+    return mode_num;
   } else {
     return -1;
   }
@@ -83,11 +86,11 @@ bool Display::confirmMode() {
   if (mode == -1) {
     return false;
   }
-  if (0 <= mode && mode < NUM_ONE_GATE_MODES) {
+  if (gate_status == GATE1 || gate_status == GATE2) {
     centeredText(one_gate_modes[mode].name, 0);
   }
   else {
-    centeredText(two_gate_modes[mode - NUM_ONE_GATE_MODES].name, 0);
+    centeredText(two_gate_modes[mode].name, 0);
   }
   centeredText("OK    BACK", 2);
   while (enc_data.button_pressed) {

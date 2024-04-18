@@ -8,8 +8,6 @@
 #include "Photogate.h"
 #include "Modes.h"
 
-enum GateStatus {BOTH, ONE, NONE};
-
 class Display {
   const unsigned short SCREEN_WIDTH = 128;
   const unsigned short SCREEN_HEIGHT = 32;
@@ -20,7 +18,6 @@ class Display {
   Adafruit_SSD1306 disp;
   Encoder enc;
   EncoderData enc_data;
-  GateStatus gate_status;
 
   void centeredText(String text, unsigned short level = 5);
   void boxedText(String text, short x, short y);

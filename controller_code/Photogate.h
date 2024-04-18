@@ -11,4 +11,7 @@ struct Photogate {
   bool connected();
 };
 
+enum GateStatus {BOTH, GATE1, GATE2, NONE};
+extern GateStatus gate_status;
+
 #endif

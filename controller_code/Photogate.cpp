@@ -10,3 +10,5 @@ Photogate::Photogate(unsigned short detect_pin, unsigned short input_pin) {
 bool Photogate::connected() {
   return !digitalRead(detect_pin);
 }
+
+GateStatus gate_status;
