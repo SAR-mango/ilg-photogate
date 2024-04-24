@@ -30,6 +30,7 @@ class Display {
   Display();
   void initScreen();
   void modeSelect(Photogate& gate_1, Photogate& gate_2);
+  //void runScreen();
 };
 
 #endif

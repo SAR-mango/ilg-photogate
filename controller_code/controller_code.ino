@@ -9,8 +9,9 @@ void setup() {
   Photogate gate_2(6, 3);
   disp.modeSelect(gate_1, gate_2);
   setupInterrupts(gate_1, gate_2);
+  //disp.runScreen();
+  one_gate_modes[0].func_ptr();
 }
 
 void loop() {
-  // Serial.print(microseconds_1);
 }
