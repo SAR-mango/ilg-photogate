@@ -4,7 +4,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#include "Encoder.h"
 #include "Photogate.h"
 #include "Modes.h"
 
@@ -30,7 +29,7 @@ class Display {
   Display();
   void initScreen();
   void modeSelect(Photogate& gate_1, Photogate& gate_2);
-  //void runScreen();
+  void runScreen();
 };
 
 #endif

@@ -153,3 +153,21 @@ void Display::modeSelect(Photogate& gate_1, Photogate& gate_2) {
     }
   }
 }
+
+void Display::runScreen() {
+  disp.clearDisplay();
+  disp.display();
+  if (gate_status == GATE1 || gate_status == GATE2) {
+    if (!one_gate_modes[mode].continuous) {
+      centeredText(one_gate_modes[mode].name, 0);
+      //todo fix units
+      centeredText(String(one_gate_modes[mode].program()));
+      centeredText(one_gate_modes[mode].qty, 3);
+      disp.display();
+    }
+    else {
+    }
+  }
+  else {
+  }
+}

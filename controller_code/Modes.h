@@ -8,7 +8,8 @@ struct Mode {
   unsigned short x;
   unsigned short y;
   String qty;
-  unsigned long (*func_ptr)();
+  unsigned long (*program)();
+  bool continuous;
 };
 
 const unsigned short NUM_ONE_GATE_MODES = 5;

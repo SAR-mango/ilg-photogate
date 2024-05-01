@@ -2,6 +2,7 @@
 #define PROGRAMS_H
 
 #include "Photogate.h"
+#include "Encoder.h"
 
 extern volatile unsigned long microseconds_1;
 extern volatile unsigned long microseconds_2;
@@ -18,5 +19,7 @@ unsigned long count();
 
 unsigned long t_avg_2();
 unsigned long time_flight();
+
+volatile unsigned long* getGateVar();
 
 #endif

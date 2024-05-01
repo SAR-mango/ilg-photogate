@@ -27,22 +27,33 @@ void ISR_getMicros2() {
 }
 
 unsigned long single() {
-  if (gate_status == GATE1) {
-    Serial.println(microseconds_1);
-    unsigned long time_1 = microseconds_1;
-    while (microseconds_1 == time_1) {}
-    Serial.println(microseconds_1);
-    time_1 = microseconds_1;
-    while (microseconds_1 == time_1) {}
-    Serial.println(microseconds_1 - time_1);
-    return microseconds_1 - time_1;
-  }
-  else {
-  }
+  volatile unsigned long* time_ptr = getGateVar();
+  volatile unsigned long time_1 = *time_ptr;
+  while (time_1 == *time_ptr) {}
+  time_1 = *time_ptr;
+  while (time_1 == *time_ptr) {}
+  return *time_ptr - time_1;
 }
 unsigned long stopwatch() {
+  volatile unsigned long* time_ptr = getGateVar();
+  volatile unsigned long time_1 = *time_ptr;
+  while (time_1 == *time_ptr) {}
+  return *time_ptr - time_1;
 }
 unsigned long pendulum() {
+  // unsigned long* time_ptr = getGateVar();
+  // unsigned long time_1 = *time_ptr;
+  // Serial.println(*time_ptr);
+  // while (time_1 == *time_ptr) {}
+  // Serial.println(*time_ptr);
+  // unsigned long temp_period = *time_ptr - time_1;
+  // time_1 = *time_ptr;
+  // while (time_1 == *time_ptr) {}
+  // Serial.println("num 3");
+  // temp_period += (*time_ptr - time_1);
+  // period += temp_period;
+  // period /= n;
+  // n += 1.0;
 }
 unsigned long t_avg_1() {
 }
@@ -52,4 +63,11 @@ unsigned long count() {
 unsigned long t_avg_2() {
 }
 unsigned long time_flight() {
+}
+
+volatile unsigned long* getGateVar() {
+  if (gate_status == GATE1) {
+    return &microseconds_1;
+  }
+  return &microseconds_2;
 }
