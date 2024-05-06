@@ -6,6 +6,7 @@ void Display::centeredText(String text, unsigned short level = 5) {
   } else {
     disp.setCursor((SCREEN_WIDTH - CHAR_WIDTH * text.length()) / 2, SCREEN_HEIGHT / 2 - CHAR_HEIGHT / 2);
   }
+  disp.setTextColor(SSD1306_WHITE, SSD1306_BLACK);
   disp.println(text);
 }
 
@@ -156,13 +157,13 @@ void Display::modeSelect(Photogate& gate_1, Photogate& gate_2) {
 
 void Display::runScreen() {
   disp.clearDisplay();
-  disp.display();
   if (gate_status == GATE1 || gate_status == GATE2) {
     if (!one_gate_modes[mode].continuous) {
       centeredText(one_gate_modes[mode].name, 0);
-      //todo fix units
-      centeredText(String(one_gate_modes[mode].program()));
-      centeredText(one_gate_modes[mode].qty, 3);
+      centeredText("--");
+      centeredText("seconds", 3);
+      disp.display();
+      centeredText(String(one_gate_modes[mode].program() / 1000000.0, 4));
       disp.display();
     }
     else {

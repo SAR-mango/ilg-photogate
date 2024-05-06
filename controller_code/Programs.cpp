@@ -36,6 +36,7 @@ unsigned long single() {
 }
 unsigned long stopwatch() {
   volatile unsigned long* time_ptr = getGateVar();
+  *time_ptr = micros();
   volatile unsigned long time_1 = *time_ptr;
   while (time_1 == *time_ptr) {}
   return *time_ptr - time_1;

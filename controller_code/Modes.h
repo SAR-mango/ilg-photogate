@@ -7,7 +7,6 @@ struct Mode {
   String name;
   unsigned short x;
   unsigned short y;
-  String qty;
   unsigned long (*program)();
   bool continuous;
 };
