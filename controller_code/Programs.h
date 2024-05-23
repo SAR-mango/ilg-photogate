@@ -7,7 +7,13 @@
 extern volatile unsigned long microseconds_1;
 extern volatile unsigned long microseconds_2;
 
-void setupInterrupts(Photogate& gate_1, Photogate& gate_2);
+enum TrigMode {TM_RISING, TM_FALLING, TM_CHANGE, TM_NONE};
+struct TriggerConfig {
+  TrigMode tm_1;
+  TrigMode tm_2;
+};
+
+void setupInterrupts(Photogate& gate_1, Photogate& gate_2, TriggerConfig& trig_conf);
 void ISR_getMicros1();
 void ISR_getMicros2();
 

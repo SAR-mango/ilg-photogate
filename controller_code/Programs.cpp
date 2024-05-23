@@ -3,18 +3,34 @@
 volatile unsigned long microseconds_1 = 0;
 volatile unsigned long microseconds_2 = 0;
 
-void setupInterrupts(Photogate& gate_1, Photogate& gate_2) {
+void setupInterrupts(Photogate& gate_1, Photogate& gate_2, TriggerConfig& trig_conf) {
   detachInterrupt(digitalPinToInterrupt(gate_1.input_pin));
   detachInterrupt(digitalPinToInterrupt(gate_2.input_pin));
-  if (gate_status == GATE1) {
-    attachInterrupt(digitalPinToInterrupt(gate_1.input_pin), ISR_getMicros1, RISING);
+  switch (trig_conf.tm_1) {
+    case TM_RISING:
+      attachInterrupt(digitalPinToInterrupt(gate_1.input_pin), ISR_getMicros1, RISING);
+      break;
+    case TM_FALLING:
+      attachInterrupt(digitalPinToInterrupt(gate_1.input_pin), ISR_getMicros1, FALLING);
+      break;
+    case TM_CHANGE:
+      attachInterrupt(digitalPinToInterrupt(gate_1.input_pin), ISR_getMicros1, CHANGE);
+      break;
+    default:
+      break;
   }
-  else if (gate_status == GATE2) {
-    attachInterrupt(digitalPinToInterrupt(gate_2.input_pin), ISR_getMicros2, RISING);
-  }
-  else {
-    attachInterrupt(digitalPinToInterrupt(gate_1.input_pin), ISR_getMicros1, RISING);
-    attachInterrupt(digitalPinToInterrupt(gate_2.input_pin), ISR_getMicros2, RISING);
+  switch (trig_conf.tm_2) {
+    case TM_RISING:
+      attachInterrupt(digitalPinToInterrupt(gate_2.input_pin), ISR_getMicros2, RISING);
+      break;
+    case TM_FALLING:
+      attachInterrupt(digitalPinToInterrupt(gate_2.input_pin), ISR_getMicros2, FALLING);
+      break;
+    case TM_CHANGE:
+      attachInterrupt(digitalPinToInterrupt(gate_2.input_pin), ISR_getMicros2, CHANGE);
+      break;
+    default:
+      break;
   }
 }
 

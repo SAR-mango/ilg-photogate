@@ -24,12 +24,13 @@ class Display {
   void displayOptions();
   short getSelectedMode();
   bool confirmMode();
+  void trigSelect(Photogate& gate_1, Photogate& gate_2);
 
   public:
   Display();
   void initScreen();
-  void modeSelect(Photogate& gate_1, Photogate& gate_2);
-  void runScreen();
+  void configure(Photogate& gate_1, Photogate& gate_2);
+  void run();
 };
 
 #endif
