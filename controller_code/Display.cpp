@@ -16,6 +16,7 @@ void Display::initScreen() {
 }
 
 void Display::configure(Photogate& gate_1, Photogate& gate_2) {
+  enc_data.position = 0;
   disp.clearDisplay();
   GateStatus last_gate_status = checkGates(gate_1, gate_2);
   gate_status = last_gate_status;

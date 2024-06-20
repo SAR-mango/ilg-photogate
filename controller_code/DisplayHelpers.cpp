@@ -83,6 +83,7 @@ short Display::getSelectedMode() {
 }
 
 bool Display::confirmMode() {
+  enc_data.position = 0;
   disp.clearDisplay();
   if (mode == -1) {
     return false;
@@ -114,23 +115,68 @@ bool Display::confirmMode() {
 }
 
 void Display::trigSelect(Photogate& gate_1, Photogate& gate_2) {
-  // TODO finish trigger select menu
+  enc_data.position = 0;
   disp.clearDisplay();
-  TriggerConfig trig_conf;
-  if (gate_status == GATE1) {
-    if (mode == 2) {
-      trig_conf = {TM_RISING, TM_NONE};
-    }
-    else {
+  TriggerConfig trig_conf = {TM_RISING, TM_NONE};
+  if (gate_status != BOTH) {
+    if (mode != 2) {
+      boxedText("Trigger", -2, -2);
+      centeredText("RISE  FALL  CHANGE", 2);
+      while (enc_data.button_pressed) {
+        enc.listen(enc_data);
+      }
+      do {
+        switch (enc_data.position % 3) {
+          case 0:
+          disp.fillRect(36, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_WHITE);
+          disp.fillRect(72, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+          disp.fillRect(120, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+          disp.display();
+          break;
+          case 1:
+          disp.fillRect(36, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+          disp.fillRect(72, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_WHITE);
+          disp.fillRect(120, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+          disp.display();
+          break;
+          default:
+          disp.fillRect(36, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+          disp.fillRect(72, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_BLACK);
+          disp.fillRect(120, CHAR_HEIGHT * 2 + 2, 3, 3, SSD1306_WHITE);
+          disp.display();
+          break;
+        }
+        enc.listen(enc_data);
+      } while (!enc_data.button_pressed);
+      switch (enc_data.position % 3) {
+        case 0:
+        if (gate_status == GATE1) {
+          trig_conf = {TM_RISING, TM_NONE};
+        }
+        else {
+          trig_conf = {TM_NONE, TM_RISING};
+        }
+        break;
+        case 1:
+        if (gate_status == GATE1) {
+          trig_conf = {TM_FALLING, TM_NONE};
+        }
+        else {
+          trig_conf = {TM_NONE, TM_FALLING};
+        }
+        break;
+        default:
+        if (gate_status == GATE1) {
+          trig_conf = {TM_CHANGE, TM_NONE};
+        }
+        else {
+          trig_conf = {TM_NONE, TM_CHANGE};
+        }
+        break;
+      }
     }
   }
-  else if (gate_status == GATE2) {
-    if (mode == 2) {
-      trig_conf = {TM_NONE, TM_RISING};
-    }
-    else {
-    }
-  }
+  // TODO finish two-gate trig conf
   else {
   }
   setupInterrupts(gate_1, gate_2, trig_conf);
